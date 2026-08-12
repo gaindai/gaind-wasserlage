@@ -4,272 +4,703 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wasserlage Raum Koblenz</title>
-<meta name="description" content="Täglich aktualisierte Niedrigwasser-Lage im Umkreis von 60 km um Koblenz, auf Basis der amtlichen NIWIS-Daten der Bundesanstalt für Gewässerkunde.">
+<meta name="description" content="Täglich aktualisierte Niedrigwasser-Lage an Rhein, Mosel und Lahn im Raum Koblenz, auf Basis der amtlichen NIWIS-Daten der Bundesanstalt für Gewässerkunde.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23b32d2d'/%3E%3C/svg%3E">
 <style>
   :root {
-    --grund: #ffffff; --text: #16181c; --leise: #5c6470; --linie: #e3e6ea; --feld: #f6f7f9;
-    --gruen: #2f7d4f; --gelb: #a8820f; --orange: #c1631b; --rot: #b32d2d; --grau: #8d949e;
+    --grund:#fff; --karte:#fff; --text:#15171b; --leise:#5b6470; --linie:#e4e7ec; --feld:#f5f7f9;
+    --gruen:#2f7d4f; --gelb:#a8820f; --orange:#c1631b; --rot:#b32d2d; --grau:#8d949e; --akzent:#15171b;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --grund: #14161a; --text: #eceef1; --leise: #9aa2ad; --linie: #2a2e35; --feld: #1c1f25;
-      --gruen: #4da372; --gelb: #cfa227; --orange: #e08036; --rot: #de5a5a; --grau: #79808a;
+      --grund:#101216; --karte:#171a1f; --text:#eceef1; --leise:#98a0ab; --linie:#272c33; --feld:#1a1e24;
+      --gruen:#4da372; --gelb:#cfa227; --orange:#e08036; --rot:#de5a5a; --grau:#79808a; --akzent:#eceef1;
     }
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--grund); color: var(--text);
-    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--grund); color:var(--text);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .huelle { max-width:960px; margin:0 auto; padding:40px 20px 72px; }
+  h1 { font-size:clamp(1.6rem,4.5vw,2.2rem); line-height:1.15; margin:0 0 8px; letter-spacing:-0.02em; }
+  h2 { font-size:1.1rem; margin:44px 0 14px; letter-spacing:-0.01em; }
+  h3 { font-size:1rem; margin:0 0 3px; letter-spacing:-0.01em; }
+  .unterzeile { color:var(--leise); margin:0 0 28px; }
+
+  .lage { background:var(--feld); border:1px solid var(--linie); border-radius:14px; padding:22px; }
+  .lage .satz { margin:0 0 16px; font-size:clamp(1rem,2.6vw,1.18rem); line-height:1.45; }
+  .balken { display:flex; height:14px; border-radius:7px; overflow:hidden; gap:2px; }
+  .teil { min-width:4px; }
+  .legenden { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .legende { display:inline-flex; align-items:center; gap:7px; white-space:nowrap; cursor:pointer;
+    font:inherit; font-size:0.83rem; color:var(--leise); background:var(--karte);
+    border:1px solid var(--linie); border-radius:999px; padding:5px 12px; }
+  .legende:hover { border-color:var(--leise); }
+  .legende[aria-pressed="true"] { border-color:var(--akzent); color:var(--text); }
+  .legende b { font-variant-numeric:tabular-nums; }
+  .punkt { width:9px; height:9px; border-radius:50%; display:inline-block; flex:none; }
+
+  .werkzeuge { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; }
+  .chip { font:inherit; font-size:0.85rem; padding:7px 14px; border-radius:999px; cursor:pointer;
+    background:var(--karte); color:var(--leise); border:1px solid var(--linie); }
+  .chip[aria-pressed="true"] { background:var(--akzent); color:var(--grund); border-color:var(--akzent); }
+
+  .liste { display:grid; gap:12px; }
+  .karte { position:relative; background:var(--karte); border:1px solid var(--linie);
+    border-radius:14px; padding:16px 18px 14px 22px; overflow:hidden; }
+  .karte[hidden] { display:none; }
+  .streifen { position:absolute; left:0; top:0; bottom:0; width:5px; }
+  .kopf { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .ort { margin:0; color:var(--leise); font-size:0.85rem; }
+  .badge { display:inline-block; padding:3px 11px; border-radius:999px; font-size:0.76rem;
+    font-weight:600; color:#fff; white-space:nowrap; flex:none; }
+  .werte { display:flex; align-items:center; flex-wrap:wrap; gap:10px 20px; margin-top:12px; }
+  .wert { font-size:1.22rem; font-weight:600; font-variant-numeric:tabular-nums; letter-spacing:-0.01em; }
+  .zusatz { font-size:0.83rem; font-weight:400; color:var(--leise); }
+  .spark { overflow:visible; }
+  .spark polyline { fill:none; stroke:var(--leise); stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; }
+  .trendfeld, .stand { color:var(--leise); font-size:0.86rem; }
+  .pfeil { font-size:1rem; }
+  .alt { color:var(--orange); display:block; font-size:0.8rem; }
+  details { margin-top:12px; border-top:1px solid var(--linie); padding-top:10px; }
+  summary { cursor:pointer; color:var(--leise); font-size:0.85rem; list-style:none; }
+  summary::-webkit-details-marker { display:none; }
+  summary::before { content:"+ "; }
+  details[open] summary::before { content:"– "; }
+  details p { margin:10px 0 0; font-size:0.9rem; }
+  details ul { margin:10px 0 0; padding-left:18px; color:var(--leise); font-size:0.86rem; }
+  .einordnung.warnung { color:var(--rot); font-weight:500; }
+
+  .tabellenrahmen { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table { width:100%; border-collapse:collapse; font-size:0.9rem; }
+  th { text-align:left; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--leise); font-weight:600; padding:0 12px 8px 0; white-space:nowrap; }
+  td { padding:10px 12px 10px 0; border-top:1px solid var(--linie); vertical-align:top; }
+  .schwelle { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--leise); white-space:nowrap; }
+  .z { text-align:right; font-variant-numeric:tabular-nums; padding-right:16px; }
+  .gruen{background:var(--gruen);} .gelb{background:var(--gelb);} .orange{background:var(--orange);}
+  .rot{background:var(--rot);} .grau{background:var(--grau);}
+  @media (max-width:600px) {
+    .erklaerung tr { display:block; border-top:1px solid var(--linie); padding:12px 0 4px; }
+    .erklaerung td { display:block; border:0; padding:0 0 6px; }
+    .erklaerung td:first-child { margin-bottom:4px; }
+    .erklaerung + thead, thead:has(+ .erklaerung) th:not(:first-child) { display:none; }
   }
-  .huelle { max-width: 900px; margin: 0 auto; padding: 32px 20px 64px; }
-  h1 { font-size: 1.7rem; line-height: 1.2; margin: 0 0 6px; letter-spacing: -0.01em; }
-  h2 { font-size: 1.05rem; margin: 40px 0 12px; }
-  .unterzeile { color: var(--leise); margin: 0 0 28px; }
-  .lage { background: var(--feld); border: 1px solid var(--linie); border-radius: 10px; padding: 18px 18px 14px; }
-  .lage p { margin: 0 0 14px; font-size: 1.05rem; }
-  .balken { display: flex; height: 12px; border-radius: 6px; overflow: hidden; gap: 2px; }
-  .teil { min-width: 3px; }
-  .legenden { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 12px; font-size: 0.84rem; color: var(--leise); }
-  .legende { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
-  .punkt { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
-  .tabellenrahmen { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
-  th { text-align: left; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.04em;
-        color: var(--leise); font-weight: 600; padding: 0 10px 8px 0; white-space: nowrap; }
-  td { padding: 11px 10px 11px 0; border-top: 1px solid var(--linie); vertical-align: top; }
-  .ort { min-width: 190px; }
-  .ort strong { font-weight: 600; }
-  .meta { display: block; color: var(--leise); font-size: 0.8rem; white-space: nowrap; }
-  .badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.78rem;
-            font-weight: 600; color: #fff; white-space: nowrap; }
-  .trend, .wert, .stand { color: var(--leise); white-space: nowrap; }
-  .wert { font-variant-numeric: tabular-nums; }
-  .alt { color: var(--orange); font-size: 0.78rem; display: block; }
-  .z { text-align: right; font-variant-numeric: tabular-nums; padding-right: 14px; }
-  .gruen { background: var(--gruen); } .gelb { background: var(--gelb); }
-  .orange { background: var(--orange); } .rot { background: var(--rot); }
-  .grau { background: var(--grau); }
-  .hinweis { background: var(--feld); border-left: 3px solid var(--linie); padding: 12px 14px;
-              border-radius: 0 8px 8px 0; color: var(--leise); font-size: 0.88rem; }
-  footer { margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--linie);
-            color: var(--leise); font-size: 0.84rem; }
-  a { color: inherit; }
+  .hinweis { background:var(--feld); border:1px solid var(--linie); padding:16px 18px;
+    border-radius:12px; color:var(--leise); font-size:0.89rem; }
+  .hinweis p { margin:0 0 10px; } .hinweis p:last-child { margin:0; }
+  footer { margin-top:48px; padding-top:20px; border-top:1px solid var(--linie);
+    color:var(--leise); font-size:0.83rem; }
+  a { color:inherit; }
+  .leer { color:var(--leise); font-size:0.9rem; padding:18px 0; }
 </style>
 </head>
 <body>
 <div class="huelle">
   <h1>Wasserlage Raum Koblenz</h1>
-  <p class="unterzeile">25 amtliche Messstellen im Umkreis von 60 km &middot;
-     Stand 12.08.2026</p>
+  <p class="unterzeile">Rhein, Mosel, Lahn und die Zuflüsse ringsum &middot; Stand 12.08.2026</p>
 
   <div class="lage">
-    <p><strong>17 von 25 Messstellen</strong> stehen auf &bdquo;sehr niedrig&ldquo; oder
-       &bdquo;extrem niedrig&ldquo;.</p>
-    <div class="balken"><div class="teil rot" style="flex:15" title="extrem niedrig: 15"></div><div class="teil orange" style="flex:2" title="sehr niedrig: 2"></div><div class="teil gelb" style="flex:5" title="niedrig: 5"></div><div class="teil gruen" style="flex:2" title="kein Niedrigwasser: 2"></div><div class="teil grau" style="flex:1" title="keine Daten: 1"></div></div>
-    <div class="legenden"><span class="legende"><i class="punkt rot"></i>extrem niedrig (15)</span><span class="legende"><i class="punkt orange"></i>sehr niedrig (2)</span><span class="legende"><i class="punkt gelb"></i>niedrig (5)</span><span class="legende"><i class="punkt gruen"></i>kein Niedrigwasser (2)</span><span class="legende"><i class="punkt grau"></i>keine Daten (1)</span></div>
+    <p class="satz"><strong>13 von 15 Messstellen</strong> im Raum Koblenz stehen auf
+       &bdquo;sehr niedrig&ldquo; oder &bdquo;extrem niedrig&ldquo;. Bei <strong>4</strong> davon liegen der heutige Abfluss sogar unter dem niedrigsten Wert, den die amtliche Zeitreihe dort bisher führt.</p>
+    <div class="balken"><div class="teil rot" style="flex:12" title="extrem niedrig: 12"></div><div class="teil orange" style="flex:1" title="sehr niedrig: 1"></div><div class="teil gelb" style="flex:1" title="niedrig: 1"></div><div class="teil grau" style="flex:1" title="keine Daten: 1"></div></div>
+    <div class="legenden"><button class="legende" data-filter="EXTREM_NIEDRIG"><i class="punkt rot"></i>extrem niedrig <b>12</b></button><button class="legende" data-filter="SEHR_NIEDRIG"><i class="punkt orange"></i>sehr niedrig <b>1</b></button><button class="legende" data-filter="NIEDRIG"><i class="punkt gelb"></i>niedrig <b>1</b></button><button class="legende" data-filter="KEIN_NIEDRIGWASSER"><i class="punkt gruen"></i>kein Niedrigwasser <b>0</b></button><button class="legende" data-filter="KEINE_DATEN"><i class="punkt grau"></i>keine Daten <b>1</b></button></div>
   </div>
 
-  <h2>Messstellen im Einzelnen</h2>
+  <h2>Was die Einstufungen bedeuten</h2>
   <div class="tabellenrahmen">
     <table>
-      <thead><tr><th>Messstelle</th><th>Einstufung</th><th>Entwicklung</th><th>Messwert</th><th>gemessen am</th></tr></thead>
-      <tbody>
-      <tr>
-        <td class="ort"><strong>5076 Mülheim-Kärlich</strong><span class="meta">Grundwasser · 6 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">55,39 m. ü. NHN</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>6062 Neuwied, Heimb. Frankf. Str.</strong><span class="meta">Grundwasser · 11 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">55,53 m. ü. NHN</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Andernach (Rhein)</strong><span class="meta">Abfluss · 17 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="fallend">↓ fallend</td>
-        <td class="wert">542,66 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Weinähr (Gelbach)</strong><span class="meta">Abfluss · 19 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="fallend">↓ fallend</td>
-        <td class="wert">0,19 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Seifen (Holzbach)</strong><span class="meta">Abfluss · 30 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="fallend">↓ fallend</td>
-        <td class="wert">0,16 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Kaub (Rhein)</strong><span class="meta">Abfluss · 33 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="fallend">↓ fallend</td>
-        <td class="wert">498,15 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Pfaffental (Wisper)</strong><span class="meta">Abfluss · 39 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="gleichbleibend">→ gleichbleibend</td>
-        <td class="wert">0 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Cochem 2 (Endertbach)</strong><span class="meta">Abfluss · 39 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="fallend">↓ fallend</td>
-        <td class="wert">0,01 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Niederbrechen (Emsbach)</strong><span class="meta">Abfluss · 40 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="steigend">↑ steigend</td>
-        <td class="wert">0,22 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Eitorf (Sieg)</strong><span class="meta">Abfluss · 48 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">1,58 m³/s</td>
-        <td class="stand">09.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Broel (Bröl)</strong><span class="meta">Abfluss · 51 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">0,23 m³/s</td>
-        <td class="stand">09.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Bonn (Rhein)</strong><span class="meta">Abfluss · 54 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="fallend">↓ fallend</td>
-        <td class="wert">555,68 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Daun (Lieser)</strong><span class="meta">Abfluss · 56 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="gleichbleibend">→ gleichbleibend</td>
-        <td class="wert">0 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Menden 1 (Sieg)</strong><span class="meta">Abfluss · 58 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">3,5 m³/s</td>
-        <td class="stand">09.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Leun neu (Lahn)</strong><span class="meta">Abfluss · 58 km</span></td>
-        <td><span class="badge rot">extrem niedrig</span></td>
-        <td class="trend" title="fallend">↓ fallend</td>
-        <td class="wert">4,06 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Cochem (Mosel)</strong><span class="meta">Abfluss · 38 km</span></td>
-        <td><span class="badge orange">sehr niedrig</span></td>
-        <td class="trend" title="fallend">↓ fallend</td>
-        <td class="wert">38,46 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>FUSSINGEN</strong><span class="meta">Grundwasser · 41 km</span></td>
-        <td><span class="badge orange">sehr niedrig</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">302,77 m. ü. NHN</td>
-        <td class="stand">10.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>BURG HOHENSTEIN</strong><span class="meta">Grundwasser · 39 km</span></td>
-        <td><span class="badge gelb">niedrig</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">260,08 m. ü. NHN</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Altenahr (Ahr)</strong><span class="meta">Abfluss · 46 km</span></td>
-        <td><span class="badge gelb">niedrig</span></td>
-        <td class="trend" title="fallend">↓ fallend</td>
-        <td class="wert">0,71 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>6072 I Mittelhof, Niederhövels</strong><span class="meta">Grundwasser · 50 km</span></td>
-        <td><span class="badge gelb">niedrig</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">156,96 m. ü. NHN</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Oberingelheim (Selz)</strong><span class="meta">Abfluss · 55 km</span></td>
-        <td><span class="badge gelb">niedrig</span></td>
-        <td class="trend" title="fallend">↓ fallend</td>
-        <td class="wert">0,16 m³/s</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>2199 Schwabenheim an der Selz</strong><span class="meta">Grundwasser · 59 km</span></td>
-        <td><span class="badge gelb">niedrig</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">210,93 m. ü. NHN</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>LGD BN VENNE 2     </strong><span class="meta">Grundwasser · 49 km</span></td>
-        <td><span class="badge gruen">kein Niedrigwasser</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">172,18 m. ü. NHN</td>
-        <td class="stand">30.07.2026 <span class="alt">13 Tage alt</span></td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>2069 Bingen am Rhein, Sponsheim</strong><span class="meta">Grundwasser · 54 km</span></td>
-        <td><span class="badge gruen">kein Niedrigwasser</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">97,71 m. ü. NHN</td>
-        <td class="stand">11.08.2026</td>
-      </tr>
-      <tr>
-        <td class="ort"><strong>Rheindiebach (Gailsbach)</strong><span class="meta">Abfluss · 38 km</span></td>
-        <td><span class="badge grau">keine Daten</span></td>
-        <td class="trend" title="unbekannt">· unbekannt</td>
-        <td class="wert">0 m³/s</td>
-        <td class="stand">28.07.2026 <span class="alt">15 Tage alt</span></td>
-      </tr>
-      </tbody>
+      <thead><tr><th>Einstufung</th><th>Schwelle</th><th>Bedeutung</th></tr></thead>
+      <tbody class="erklaerung"><tr><td><span class="badge gruen">kein Niedrigwasser</span></td><td class="schwelle">über Q75</td><td>Im üblichen Bereich für diese Jahreszeit.</td></tr><tr><td><span class="badge gelb">niedrig</span></td><td class="schwelle">Q75</td><td>Ein Wert, der normalerweise an einem Viertel aller Tage unterschritten wird. Im Sommer nichts Ungewöhnliches.</td></tr><tr><td><span class="badge orange">sehr niedrig</span></td><td class="schwelle">Q95 bzw. Q90</td><td>Ein Wert, der normalerweise nur an 5 Prozent der Tage unterschritten wird, also an rund 18 Tagen im Jahr.</td></tr><tr><td><span class="badge rot">extrem niedrig</span></td><td class="schwelle">Q99</td><td>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</td></tr></tbody>
     </table>
   </div>
+  <p class="unterzeile" style="margin-top:12px;font-size:0.86rem">
+    Die Schwellen stammen aus NIWIS und werden je Messstelle aus dem Zeitraum 1991 bis 2020 berechnet.
+    Sie sind damit zwischen Messstellen vergleichbar, auch wenn ein kleiner Bach und der Rhein völlig
+    unterschiedliche Mengen führen.</p>
+
+  <h2>Messstellen</h2>
+  <div class="werkzeuge">
+    <button class="chip" data-bereich="kern" aria-pressed="true">Raum Koblenz (15)</button>
+    <button class="chip" data-bereich="alle" aria-pressed="false">auch weiteres Umfeld (25)</button>
+    <button class="chip" data-groesse="Abfluss" aria-pressed="false">nur Flüsse</button>
+    <button class="chip" data-groesse="Grundwasser" aria-pressed="false">nur Grundwasser</button>
+  </div>
+  <div class="liste" id="liste">
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Grundwasser" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>5076 Mülheim-Kärlich</h3>
+            <p class="ort">Grundwasser &middot; Quartäre Terrassensedimente des Mittelrheins und seiner Nebenflüsse &middot; 6 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">55,39 m. ü. NHN <span class="zusatz" title="Eigene Rechnung: Geländeoberkante minus Wasserstand">rechnerisch 12,8 m unter Gelände</span></div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,3.0 3.6,3.5 7.2,4.0 10.8,4.5 14.3,5.1 17.9,6.1 21.5,6.6 25.1,7.1 28.7,8.1 32.3,8.6 35.9,9.7 39.4,10.2 43.0,10.7 46.6,11.7 50.2,12.2 53.8,13.3 57.4,13.8 61.0,14.3 64.6,15.3 68.1,15.8 71.7,16.3 75.3,17.4 78.9,17.9 82.5,18.9 86.1,19.4 89.7,20.4 93.2,20.9 96.8,22.0 100.4,22.5 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          
+          <ul><li>Messstelle betrieben von LfU</li><li>Luftlinie 6 km bis Koblenz</li><li><a href="https://lfu.rlp.de" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Grundwasser" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>6062 Neuwied, Heimb. Frankf. Str.</h3>
+            <p class="ort">Grundwasser &middot; Quartäre Terrassensedimente des Mittelrheins und seiner Nebenflüsse &middot; 11 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">55,53 m. ü. NHN <span class="zusatz" title="Eigene Rechnung: Geländeoberkante minus Wasserstand">rechnerisch 18,4 m unter Gelände</span></div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,3.0 3.6,3.9 7.2,4.4 10.8,4.9 14.3,5.8 17.9,6.7 21.5,7.7 25.1,8.1 28.7,8.6 32.3,9.5 35.9,10.0 39.4,10.4 43.0,10.9 46.6,11.8 50.2,12.8 53.8,13.2 57.4,13.7 61.0,14.6 64.6,15.1 68.1,16.0 71.7,16.5 75.3,17.0 78.9,17.9 82.5,18.8 86.1,19.7 89.7,20.2 93.2,20.7 96.8,21.6 100.4,22.5 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          
+          <ul><li>Messstelle betrieben von LfU</li><li>Luftlinie 11 km bis Koblenz</li><li><a href="https://lfu.rlp.de" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Andernach (Rhein)</h3>
+            <p class="ort">Rhein &middot; Rhein &middot; 17 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">543 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,12.5 3.6,13.3 7.2,15.4 10.8,15.2 14.3,13.1 17.9,9.7 21.5,5.3 25.1,4.1 28.7,3.0 32.3,5.3 35.9,8.7 39.4,11.6 43.0,14.0 46.6,14.8 50.2,16.1 53.8,17.5 57.4,18.5 61.0,18.1 64.6,19.3 68.1,19.4 71.7,18.5 75.3,19.5 78.9,18.5 82.5,19.5 86.1,21.5 89.7,21.2 93.2,20.8 96.8,20.6 100.4,22.3 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          <p class="einordnung warnung">Der heutige Wert liegt unter dem niedrigsten Abfluss, den die amtliche Zeitreihe für diese Messstelle führt (593 m³/s am 22.10.2018).</p>
+          <ul><li>Einzugsgebiet 139.549 km²</li><li>Messstelle betrieben von WSA Rhein</li><li>Luftlinie 17 km bis Koblenz</li><li><a href="https://www.pegelonline.wsv.de/gast/start" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Weinähr (Gelbach)</h3>
+            <p class="ort">Gelbach &middot; Lahn &middot; 19 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">0,188 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,17.6 3.6,16.8 7.2,16.2 10.8,16.8 14.3,5.3 17.9,13.4 21.5,17.0 25.1,19.5 28.7,19.4 32.3,20.2 35.9,19.4 39.4,20.1 43.0,20.0 46.6,20.2 50.2,3.0 53.8,16.8 57.4,18.2 61.0,19.1 64.6,19.2 68.1,16.8 71.7,20.8 75.3,21.3 78.9,19.7 82.5,17.3 86.1,21.2 89.7,23.0 93.2,20.3 96.8,20.3 100.4,20.6 104.0,21.9"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          <p class="einordnung">Niedrigster bisher erfasster Abfluss hier: 0,084 m³/s am 26.07.1959.</p>
+          <ul><li>Einzugsgebiet 215 km²</li><li>Messstelle betrieben von LfU RP</li><li>Luftlinie 19 km bis Koblenz</li><li><a href="https://geodaten-wasser.rlp-umwelt.de/wasserstand/2589030600/hauptwerte" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Seifen (Holzbach)</h3>
+            <p class="ort">Holzbach &middot; Wied &middot; 30 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">0,163 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,15.0 3.6,15.8 7.2,17.1 10.8,13.2 14.3,3.0 17.9,11.0 21.5,14.8 25.1,15.9 28.7,15.8 32.3,16.8 35.9,16.0 39.4,16.5 43.0,17.2 46.6,17.2 50.2,13.8 53.8,16.8 57.4,18.3 61.0,18.0 64.6,15.0 68.1,12.4 71.7,18.7 75.3,20.2 78.9,18.8 82.5,20.0 86.1,21.5 89.7,22.3 93.2,21.0 96.8,21.4 100.4,22.3 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          <p class="einordnung">Niedrigster bisher erfasster Abfluss hier: 0,064 m³/s am 09.08.1975.</p>
+          <ul><li>Einzugsgebiet 176 km²</li><li>Messstelle betrieben von LfU RP</li><li>Luftlinie 30 km bis Koblenz</li><li><a href="https://geodaten-wasser.rlp-umwelt.de/wasserstand/2716060000/hauptwerte" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Kaub (Rhein)</h3>
+            <p class="ort">Rhein &middot; Rhein &middot; 33 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">498 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,12.4 3.6,14.4 7.2,15.7 10.8,14.8 14.3,12.3 17.9,8.6 21.5,4.8 25.1,3.0 28.7,3.8 32.3,7.0 35.9,10.4 39.4,13.9 43.0,15.8 46.6,16.6 50.2,17.9 53.8,19.2 57.4,19.2 61.0,19.3 64.6,19.6 68.1,18.9 71.7,19.3 75.3,19.7 78.9,20.2 82.5,21.5 86.1,21.4 89.7,20.4 93.2,20.0 96.8,21.3 100.4,22.5 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          
+          <ul><li>Einzugsgebiet 103.488 km²</li><li>Messstelle betrieben von WSA Rhein</li><li>Luftlinie 33 km bis Koblenz</li><li><a href="https://www.pegelonline.wsv.de/gast/start" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Pfaffental (Wisper)</h3>
+            <p class="ort">Wisper &middot; Mittelrhein &middot; 39 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">0 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,23.0 3.6,23.0 7.2,3.0 10.8,3.0 14.3,3.0 17.9,3.0 21.5,3.0 25.1,23.0 28.7,23.0 32.3,23.0 35.9,23.0 39.4,23.0 43.0,23.0 46.6,23.0 50.2,23.0 53.8,23.0 57.4,23.0 61.0,23.0 64.6,23.0 68.1,23.0 71.7,23.0 75.3,23.0 78.9,23.0 82.5,23.0 86.1,23.0 89.7,23.0 93.2,23.0 96.8,23.0 100.4,23.0 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">→</span> gleichbleibend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          <p class="einordnung warnung">Der heutige Wert liegt unter dem niedrigsten Abfluss, den die amtliche Zeitreihe für diese Messstelle führt (0,006 m³/s am 11.07.1976).</p>
+          <ul><li>Einzugsgebiet 170 km²</li><li>Messstelle betrieben von HLNUG</li><li>Luftlinie 39 km bis Koblenz</li><li><a href="https://www.hlnug.de/static/pegel/wiskiweb3/webpublic/#/overview/Wasserstand/station/42104/Pfaffental/Wasserstand?period=P7D" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Cochem 2 (Endertbach)</h3>
+            <p class="ort">Endertbach &middot; Mosel &middot; 39 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">0,013 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,18.8 3.6,18.8 7.2,3.0 10.8,11.7 14.3,12.0 17.9,17.5 21.5,19.5 25.1,16.5 28.7,12.0 32.3,12.0 35.9,10.1 39.4,11.1 43.0,14.9 46.6,18.8 50.2,16.9 53.8,17.5 57.4,19.1 61.0,20.1 64.6,20.1 68.1,18.8 71.7,19.1 75.3,19.8 78.9,14.9 82.5,16.5 86.1,20.1 89.7,21.1 93.2,21.1 96.8,21.1 100.4,22.4 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          <p class="einordnung">Niedrigster bisher erfasster Abfluss hier: 0,005 m³/s am 16.12.1991.</p>
+          <ul><li>Einzugsgebiet 59,0 km²</li><li>Messstelle betrieben von LfU RP</li><li>Luftlinie 39 km bis Koblenz</li><li><a href="https://geodaten-wasser.rlp-umwelt.de/wasserstand/2692040200/hauptwerte" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Niederbrechen (Emsbach)</h3>
+            <p class="ort">Emsbach &middot; Lahn &middot; 40 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">0,219 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,14.0 3.6,16.5 7.2,10.0 10.8,19.5 14.3,14.1 17.9,13.5 21.5,3.0 25.1,17.1 28.7,17.3 32.3,14.0 35.9,17.8 39.4,17.5 43.0,18.1 46.6,18.8 50.2,16.9 53.8,18.4 57.4,20.8 61.0,20.1 64.6,20.0 68.1,19.5 71.7,19.8 75.3,19.8 78.9,16.8 82.5,22.9 86.1,23.0 89.7,19.9 93.2,20.9 96.8,20.5 100.4,20.8 104.0,19.4"/></svg>
+          <div class="trendfeld"><span class="pfeil">↑</span> steigend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          <p class="einordnung">Niedrigster bisher erfasster Abfluss hier: 0,090 m³/s am 29.06.1976.</p>
+          <ul><li>Einzugsgebiet 305 km²</li><li>Messstelle betrieben von HLNUG</li><li>Luftlinie 40 km bis Koblenz</li><li><a href="https://www.hlnug.de/static/pegel/wiskiweb3/webpublic/#/overview/Wasserstand/station/42545/Niederbrechen/Wasserstand?period=P7D" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Bonn (Rhein)</h3>
+            <p class="ort">Rhein &middot; Rhein &middot; 54 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">556 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,11.8 3.6,12.9 7.2,14.9 10.8,16.0 14.3,14.7 17.9,11.5 21.5,7.2 25.1,4.6 28.7,3.0 32.3,4.3 35.9,8.0 39.4,11.3 43.0,14.1 46.6,15.1 50.2,16.4 53.8,17.6 57.4,19.0 61.0,18.9 64.6,19.3 68.1,20.1 71.7,19.2 75.3,19.7 78.9,19.2 82.5,19.3 86.1,21.1 89.7,21.7 93.2,21.0 96.8,20.9 100.4,21.8 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          <p class="einordnung warnung">Der heutige Wert liegt unter dem niedrigsten Abfluss, den die amtliche Zeitreihe für diese Messstelle führt (622 m³/s am 01.09.2003).</p>
+          <ul><li>Einzugsgebiet 140.901 km²</li><li>Messstelle betrieben von WSA Rhein</li><li>Luftlinie 54 km bis Koblenz</li><li><a href="https://www.pegelonline.wsv.de/gast/start" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Daun (Lieser)</h3>
+            <p class="ort">Lieser &middot; Mosel &middot; 56 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">0 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,6.6 3.6,4.8 7.2,3.0 10.8,3.0 14.3,3.0 17.9,3.0 21.5,3.0 25.1,3.0 28.7,3.0 32.3,3.0 35.9,3.0 39.4,4.8 43.0,6.6 46.6,8.5 50.2,8.5 53.8,8.5 57.4,15.7 61.0,23.0 64.6,23.0 68.1,23.0 71.7,23.0 75.3,23.0 78.9,23.0 82.5,23.0 86.1,23.0 89.7,23.0 93.2,23.0 96.8,23.0 100.4,23.0 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">→</span> gleichbleibend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          <p class="einordnung warnung">Der heutige Wert liegt unter dem niedrigsten Abfluss, den die amtliche Zeitreihe für diese Messstelle führt (0,002 m³/s am 21.08.2018).</p>
+          <ul><li>Einzugsgebiet 42,0 km²</li><li>Messstelle betrieben von LfU RP</li><li>Luftlinie 56 km bis Koblenz</li><li><a href="https://geodaten-wasser.rlp-umwelt.de/wasserstand/2678020100/hauptwerte" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Leun neu (Lahn)</h3>
+            <p class="ort">Lahn &middot; Lahn &middot; 58 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">4,06 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,13.2 3.6,12.8 7.2,10.6 10.8,14.8 14.3,7.9 17.9,7.3 21.5,11.9 25.1,14.8 28.7,12.9 32.3,15.0 35.9,14.6 39.4,17.1 43.0,14.5 46.6,17.6 50.2,11.3 53.8,11.4 57.4,15.4 61.0,17.7 64.6,18.7 68.1,11.5 71.7,16.2 75.3,18.7 78.9,13.2 82.5,3.0 86.1,20.2 89.7,20.3 93.2,20.7 96.8,21.5 100.4,21.8 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          <p class="einordnung">Niedrigster bisher erfasster Abfluss hier: 2,00 m³/s am 18.07.1921.</p>
+          <ul><li>Einzugsgebiet 3.571 km²</li><li>Messstelle betrieben von WSA Mosel-Saar-Lahn</li><li>Luftlinie 58 km bis Koblenz</li><li><a href="https://www.pegelonline.wsv.de/gast/start" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="SEHR_NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen orange"></div>
+        <div class="kopf">
+          <div>
+            <h3>Cochem (Mosel)</h3>
+            <p class="ort">Mosel &middot; Mosel &middot; 38 km</p>
+          </div>
+          <span class="badge orange">sehr niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">38,5 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,20.0 3.6,18.4 7.2,17.1 10.8,14.4 14.3,11.1 17.9,3.0 21.5,11.3 25.1,17.0 28.7,15.0 32.3,21.6 35.9,14.1 39.4,20.1 43.0,15.1 46.6,17.9 50.2,19.3 53.8,18.8 57.4,18.1 61.0,17.2 64.6,22.3 68.1,20.7 71.7,20.4 75.3,16.2 78.9,5.4 82.5,12.1 86.1,16.9 89.7,18.6 93.2,23.0 96.8,18.6 100.4,19.6 104.0,18.3"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 5 Prozent der Tage unterschritten wird, also an rund 18 Tagen im Jahr.</p>
+          <p class="einordnung">Niedrigster bisher erfasster Abfluss hier: 29,0 m³/s am 26.05.2011. Der heutige Wert liegt nur knapp darüber.</p>
+          <ul><li>Einzugsgebiet 27.088 km²</li><li>Messstelle betrieben von WSA Mosel-Saar-Lahn</li><li>Luftlinie 38 km bis Koblenz</li><li><a href="https://www.pegelonline.wsv.de/gast/start" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="NIEDRIG" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen gelb"></div>
+        <div class="kopf">
+          <div>
+            <h3>Altenahr (Ahr)</h3>
+            <p class="ort">Ahr &middot; Ahr &middot; 46 km</p>
+          </div>
+          <span class="badge gelb">niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">0,714 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,10.3 3.6,12.0 7.2,12.2 10.8,12.0 14.3,10.6 17.9,3.0 21.5,13.3 25.1,16.0 28.7,16.8 32.3,16.3 35.9,17.3 39.4,17.1 43.0,17.9 46.6,19.0 50.2,19.0 53.8,18.2 57.4,18.8 61.0,19.3 64.6,14.7 68.1,13.1 71.7,17.5 75.3,19.6 78.9,16.9 82.5,17.3 86.1,20.2 89.7,22.2 93.2,22.8 96.8,21.5 100.4,22.4 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise an einem Viertel aller Tage unterschritten wird. Im Sommer nichts Ungewöhnliches.</p>
+          <p class="einordnung">Niedrigster bisher erfasster Abfluss hier: 0,292 m³/s am 08.07.1976.</p>
+          <ul><li>Einzugsgebiet 747 km²</li><li>Messstelle betrieben von LfU RP</li><li>Luftlinie 46 km bis Koblenz</li><li><a href="https://geodaten-wasser.rlp-umwelt.de/wasserstand/2718040300/hauptwerte" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="KEINE_DATEN" data-groesse="Abfluss" data-kern="true">
+        <div class="streifen grau"></div>
+        <div class="kopf">
+          <div>
+            <h3>Rheindiebach (Gailsbach)</h3>
+            <p class="ort">Gailsbach &middot; Mittelrhein &middot; 38 km</p>
+          </div>
+          <span class="badge grau">keine Daten</span>
+        </div>
+        <div class="werte">
+          <div class="wert">0,002 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,13.0 4.2,13.0 8.3,13.0 12.5,13.0 16.6,13.0 20.8,13.0 25.0,13.0 29.1,13.0 33.3,13.0 37.4,13.0 41.6,13.0 45.8,13.0 49.9,13.0 54.1,13.0 58.2,3.0 62.4,13.0 66.6,13.0 70.7,23.0 74.9,23.0 79.0,23.0 83.2,23.0 87.4,23.0 91.5,23.0 95.7,23.0 99.8,23.0 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 28.07.2026<span class="alt">Messwert 15 Tage alt</span></div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Für diese Messstelle liegt derzeit keine Einstufung vor.</p>
+          <p class="einordnung">Niedrigster bisher erfasster Abfluss hier: 0 m³/s am 27.06.1982. Der heutige Wert liegt nur knapp darüber.</p>
+          <ul><li>Einzugsgebiet 10,0 km²</li><li>Messstelle betrieben von LfU RP</li><li>Luftlinie 38 km bis Koblenz</li><li><a href="https://geodaten-wasser.rlp-umwelt.de/wasserstand/2572050000/hauptwerte" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="false">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Eitorf (Sieg)</h3>
+            <p class="ort">Sieg &middot; Sieg &middot; 48 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">1,58 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,10.5 3.6,12.2 7.2,14.0 10.8,14.7 14.3,16.8 17.9,16.7 21.5,17.1 25.1,10.0 28.7,9.4 32.3,16.5 35.9,17.3 39.4,16.7 43.0,17.6 46.6,16.7 50.2,17.4 53.8,18.4 57.4,15.9 61.0,10.7 64.6,12.1 68.1,17.9 71.7,16.0 75.3,17.0 78.9,17.5 82.5,19.4 86.1,11.9 89.7,3.0 93.2,12.1 96.8,18.9 100.4,23.0 104.0,21.5"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 09.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          
+          <ul><li>Einzugsgebiet 1.468 km²</li><li>Messstelle betrieben von LANUV NRW</li><li>Luftlinie 48 km bis Koblenz</li><li><a href="http://luadb.lds.nrw.de/LUA/hygon/pegel.php" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="false">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Broel (Bröl)</h3>
+            <p class="ort">Bröl &middot; Sieg &middot; 51 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">0,228 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,19.4 3.6,19.9 7.2,20.2 10.8,20.4 14.3,20.7 17.9,20.9 21.5,20.1 25.1,16.6 28.7,3.3 32.3,3.0 35.9,4.0 39.4,6.3 43.0,13.6 46.6,21.8 50.2,22.0 53.8,22.2 57.4,20.3 61.0,20.9 64.6,22.0 68.1,21.7 71.7,21.6 75.3,15.4 78.9,21.3 82.5,22.2 86.1,22.1 89.7,22.3 93.2,22.6 96.8,23.0 100.4,22.7 104.0,22.8"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 09.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          
+          <ul><li>Einzugsgebiet 216 km²</li><li>Messstelle betrieben von LANUV NRW</li><li>Luftlinie 51 km bis Koblenz</li><li><a href="http://luadb.lds.nrw.de/LUA/hygon/pegel.php" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="EXTREM_NIEDRIG" data-groesse="Abfluss" data-kern="false">
+        <div class="streifen rot"></div>
+        <div class="kopf">
+          <div>
+            <h3>Menden 1 (Sieg)</h3>
+            <p class="ort">Sieg &middot; Sieg &middot; 58 km</p>
+          </div>
+          <span class="badge rot">extrem niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">3,50 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,3.0 3.6,5.1 7.2,7.0 10.8,8.3 14.3,10.3 17.9,12.3 21.5,13.6 25.1,13.8 28.7,14.0 32.3,14.3 35.9,14.6 39.4,15.5 43.0,16.1 46.6,16.4 50.2,17.9 53.8,18.0 57.4,19.0 61.0,19.4 64.6,20.9 68.1,22.1 71.7,22.4 75.3,23.0 78.9,22.8 82.5,22.4 86.1,22.5 89.7,18.0 93.2,14.0 96.8,13.4 100.4,13.6 104.0,13.4"/></svg>
+          <div class="trendfeld"><span class="pfeil">↑</span> steigend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 09.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 1 Prozent der Tage unterschritten wird, also an drei bis vier Tagen im Jahr.</p>
+          
+          <ul><li>Einzugsgebiet 2.825 km²</li><li>Messstelle betrieben von LANUV NRW</li><li>Luftlinie 58 km bis Koblenz</li><li><a href="http://luadb.lds.nrw.de/LUA/hygon/pegel.php" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="SEHR_NIEDRIG" data-groesse="Grundwasser" data-kern="false">
+        <div class="streifen orange"></div>
+        <div class="kopf">
+          <div>
+            <h3>FUSSINGEN</h3>
+            <p class="ort">Grundwasser &middot; Tertiär des Westerwaldes &middot; 41 km</p>
+          </div>
+          <span class="badge orange">sehr niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">302,77 m. ü. NHN <span class="zusatz" title="Eigene Rechnung: Geländeoberkante minus Wasserstand">rechnerisch 2,01 m unter Gelände</span></div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,3.0 3.6,3.0 7.2,4.5 10.8,5.3 14.3,6.1 17.9,6.1 21.5,6.8 25.1,7.6 28.7,8.4 32.3,9.2 35.9,9.9 39.4,9.9 43.0,10.7 46.6,10.7 50.2,11.5 53.8,13.0 57.4,13.8 61.0,14.5 64.6,15.3 68.1,16.1 71.7,16.8 75.3,17.6 78.9,18.4 82.5,18.4 86.1,19.2 89.7,19.9 93.2,20.7 96.8,21.5 100.4,22.2 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">→</span> gleichbleibend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 10.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise nur an 5 Prozent der Tage unterschritten wird, also an rund 18 Tagen im Jahr.</p>
+          
+          <ul><li>Messstelle betrieben von HLNUG</li><li>Luftlinie 41 km bis Koblenz</li><li><a href="https://www.hlnug.de/messwerte/datenportal/messstelle/4/10/7678" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="NIEDRIG" data-groesse="Grundwasser" data-kern="false">
+        <div class="streifen gelb"></div>
+        <div class="kopf">
+          <div>
+            <h3>BURG HOHENSTEIN</h3>
+            <p class="ort">Grundwasser &middot; Paläozoikum des südlichen Rheinischen Schiefergebirges &middot; 39 km</p>
+          </div>
+          <span class="badge gelb">niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">260,08 m. ü. NHN <span class="zusatz" title="Eigene Rechnung: Geländeoberkante minus Wasserstand">rechnerisch 2,88 m unter Gelände</span></div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,3.0 3.6,3.0 7.2,5.0 10.8,5.0 14.3,4.0 17.9,6.0 21.5,7.0 25.1,9.0 28.7,10.0 32.3,10.0 35.9,9.0 39.4,10.0 43.0,7.0 46.6,7.0 50.2,11.0 53.8,14.0 57.4,13.0 61.0,13.0 64.6,14.0 68.1,14.0 71.7,16.0 75.3,15.0 78.9,16.0 82.5,17.0 86.1,19.0 89.7,21.0 93.2,21.0 96.8,19.0 100.4,20.0 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise an einem Viertel aller Tage unterschritten wird. Im Sommer nichts Ungewöhnliches.</p>
+          
+          <ul><li>Messstelle betrieben von HLNUG</li><li>Luftlinie 39 km bis Koblenz</li><li><a href="https://www.hlnug.de/messwerte/datenportal/messstelle/4/10/9688" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="NIEDRIG" data-groesse="Grundwasser" data-kern="false">
+        <div class="streifen gelb"></div>
+        <div class="kopf">
+          <div>
+            <h3>6072 I Mittelhof, Niederhövels</h3>
+            <p class="ort">Grundwasser &middot; Paläozoikum des nördlichen Rheinischen Schiefergebirges &middot; 50 km</p>
+          </div>
+          <span class="badge gelb">niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">156,96 m. ü. NHN <span class="zusatz" title="Eigene Rechnung: Geländeoberkante minus Wasserstand">rechnerisch 2,77 m unter Gelände</span></div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,3.0 3.6,5.0 7.2,6.0 10.8,7.0 14.3,8.0 17.9,9.0 21.5,10.0 25.1,11.0 28.7,11.0 32.3,12.0 35.9,13.0 39.4,13.0 43.0,14.0 46.6,15.0 50.2,16.0 53.8,16.0 57.4,16.0 61.0,17.0 64.6,18.0 68.1,18.0 71.7,19.0 75.3,20.0 78.9,18.0 82.5,17.0 86.1,18.0 89.7,19.0 93.2,20.0 96.8,21.0 100.4,22.0 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">→</span> gleichbleibend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise an einem Viertel aller Tage unterschritten wird. Im Sommer nichts Ungewöhnliches.</p>
+          
+          <ul><li>Messstelle betrieben von LfU</li><li>Luftlinie 50 km bis Koblenz</li><li><a href="https://lfu.rlp.de" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="NIEDRIG" data-groesse="Abfluss" data-kern="false">
+        <div class="streifen gelb"></div>
+        <div class="kopf">
+          <div>
+            <h3>Oberingelheim (Selz)</h3>
+            <p class="ort">Selz &middot; Selz &middot; 55 km</p>
+          </div>
+          <span class="badge gelb">niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">0,162 m³/s</div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,23.0 3.6,23.0 7.2,23.0 10.8,22.1 14.3,18.2 17.9,20.2 21.5,21.1 25.1,21.1 28.7,21.1 32.3,21.1 35.9,21.2 39.4,22.1 43.0,22.1 46.6,22.1 50.2,21.8 53.8,21.1 57.4,21.1 61.0,21.1 64.6,21.1 68.1,3.0 71.7,15.1 75.3,15.3 78.9,15.8 82.5,17.2 86.1,18.5 89.7,20.2 93.2,21.1 96.8,21.1 100.4,21.1 104.0,21.1"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend</div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise an einem Viertel aller Tage unterschritten wird. Im Sommer nichts Ungewöhnliches.</p>
+          <p class="einordnung">Niedrigster bisher erfasster Abfluss hier: 0,051 m³/s am 19.09.2020.</p>
+          <ul><li>Einzugsgebiet 363 km²</li><li>Messstelle betrieben von LfU RP</li><li>Luftlinie 55 km bis Koblenz</li><li><a href="https://geodaten-wasser.rlp-umwelt.de/wasserstand/2520080500/hauptwerte" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="NIEDRIG" data-groesse="Grundwasser" data-kern="false">
+        <div class="streifen gelb"></div>
+        <div class="kopf">
+          <div>
+            <h3>2199 Schwabenheim an der Selz</h3>
+            <p class="ort">Grundwasser &middot; Rotliegend und Tertiär des zentralen Mainzer Beckens &middot; 59 km</p>
+          </div>
+          <span class="badge gelb">niedrig</span>
+        </div>
+        <div class="werte">
+          <div class="wert">210,93 m. ü. NHN <span class="zusatz" title="Eigene Rechnung: Geländeoberkante minus Wasserstand">rechnerisch 31,9 m unter Gelände</span></div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,14.4 3.6,14.4 7.2,17.3 10.8,14.4 14.3,11.6 17.9,14.4 21.5,20.1 25.1,20.1 28.7,20.1 32.3,14.4 35.9,11.6 39.4,8.7 43.0,3.0 46.6,8.7 50.2,23.0 53.8,23.0 57.4,11.6 61.0,14.4 64.6,11.6 68.1,14.4 71.7,14.4 75.3,8.7 78.9,11.6 82.5,17.3 86.1,20.1 89.7,17.3 93.2,11.6 96.8,8.7 100.4,11.6 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">→</span> gleichbleibend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Ein Wert, der normalerweise an einem Viertel aller Tage unterschritten wird. Im Sommer nichts Ungewöhnliches.</p>
+          
+          <ul><li>Messstelle betrieben von LfU</li><li>Luftlinie 59 km bis Koblenz</li><li><a href="https://lfu.rlp.de" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="KEIN_NIEDRIGWASSER" data-groesse="Grundwasser" data-kern="false">
+        <div class="streifen gruen"></div>
+        <div class="kopf">
+          <div>
+            <h3>LGD BN VENNE 2     </h3>
+            <p class="ort">Grundwasser &middot; Altpleistozän von Ville, Erft und Rur &middot; 49 km</p>
+          </div>
+          <span class="badge gruen">kein Niedrigwasser</span>
+        </div>
+        <div class="werte">
+          <div class="wert">172,18 m. ü. NHN <span class="zusatz" title="Eigene Rechnung: Geländeoberkante minus Wasserstand">rechnerisch 6,65 m unter Gelände</span></div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,7.0 4.7,7.0 9.5,7.0 14.2,7.0 18.9,7.0 23.6,7.0 28.4,7.0 33.1,3.0 37.8,3.0 42.5,3.0 47.3,3.0 52.0,7.0 56.7,7.0 61.5,7.0 66.2,7.0 70.9,7.0 75.6,7.0 80.4,7.0 85.1,7.0 89.8,7.0 94.5,23.0 99.3,23.0 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 30.07.2026<span class="alt">Messwert 13 Tage alt</span></div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Im üblichen Bereich für diese Jahreszeit.</p>
+          
+          <ul><li>Messstelle betrieben von Land NRW                                          </li><li>Luftlinie 49 km bis Koblenz</li><li><a href="https://www.elwasweb.nrw.de/" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+      <article class="karte" data-klasse="KEIN_NIEDRIGWASSER" data-groesse="Grundwasser" data-kern="false">
+        <div class="streifen gruen"></div>
+        <div class="kopf">
+          <div>
+            <h3>2069 Bingen am Rhein, Sponsheim</h3>
+            <p class="ort">Grundwasser &middot; Rotliegend und Tertiär des zentralen Mainzer Beckens &middot; 54 km</p>
+          </div>
+          <span class="badge gruen">kein Niedrigwasser</span>
+        </div>
+        <div class="werte">
+          <div class="wert">97,71 m. ü. NHN <span class="zusatz" title="Eigene Rechnung: Geländeoberkante minus Wasserstand">rechnerisch 3,79 m unter Gelände</span></div>
+          <svg class="spark" viewBox="0 0 104 26" width="104" height="26" aria-hidden="true" focusable="false"><polyline points="0.0,3.0 3.6,5.0 7.2,5.0 10.8,5.0 14.3,7.0 17.9,7.0 21.5,7.0 25.1,9.0 28.7,9.0 32.3,9.0 35.9,11.0 39.4,11.0 43.0,11.0 46.6,13.0 50.2,13.0 53.8,13.0 57.4,15.0 61.0,15.0 64.6,15.0 68.1,17.0 71.7,17.0 75.3,17.0 78.9,17.0 82.5,19.0 86.1,19.0 89.7,21.0 93.2,21.0 96.8,21.0 100.4,21.0 104.0,23.0"/></svg>
+          <div class="trendfeld"><span class="pfeil">↓</span> fallend <span class="zusatz">eigene Rechnung</span></div>
+          <div class="stand">gemessen 11.08.2026</div>
+        </div>
+        <details>
+          <summary>Was heißt das?</summary>
+          <p>Im üblichen Bereich für diese Jahreszeit.</p>
+          
+          <ul><li>Messstelle betrieben von LfU</li><li>Luftlinie 54 km bis Koblenz</li><li><a href="https://lfu.rlp.de" rel="noopener">Amtliche Messstellenseite</a></li></ul>
+        </details>
+      </article>
+  </div>
+  <p class="leer" id="leer" hidden>Keine Messstelle passt zu dieser Auswahl.</p>
 
   <h2>Verlauf</h2>
-  <p class="unterzeile">Anzahl Messstellen je Einstufung, ein Eintrag pro Abruftag.</p>
+  <p class="unterzeile" style="font-size:0.88rem">Anzahl Messstellen im Raum Koblenz je Einstufung, ein Eintrag pro Abruftag.</p>
   <div class="tabellenrahmen">
     <table>
       <thead><tr><th>Tag</th><th>extrem niedrig</th><th>sehr niedrig</th><th>niedrig</th><th>kein Niedrigwasser</th><th>keine Daten</th></tr></thead>
-      <tbody>      <tr><td>12.08.2026</td><td class="z">15</td><td class="z">2</td><td class="z">5</td><td class="z">2</td><td class="z">1</td></tr></tbody>
+      <tbody><tr><td>12.08.2026</td><td class="z">12</td><td class="z">1</td><td class="z">1</td><td class="z">0</td><td class="z">1</td></tr></tbody>
     </table>
   </div>
 
   <h2>Was diese Seite ist, und was nicht</h2>
   <div class="hinweis">
-    Diese Seite gibt die amtliche Einstufung der Messstellen wieder. Sie ist eine
-    Orientierung, keine amtliche Warnung und keine Aussage über die Trinkwasserversorgung
-    einer bestimmten Gemeinde. Dafür sind die Betriebsdaten des jeweiligen Wasserversorgers
-    maßgeblich, die hier nicht enthalten sind. Grundwasserwerte können mehrere Wochen
-    alt sein, das jeweilige Messdatum steht deshalb an jeder Zeile.
+    <p>Sie gibt die amtliche Einstufung der Messstellen wieder und ordnet sie ein. Sie ist eine
+       Orientierung, <strong>keine amtliche Warnung</strong> und keine Aussage über die
+       Trinkwasserversorgung einer bestimmten Gemeinde. Dafür sind die Betriebsdaten des jeweiligen
+       Wasserversorgers maßgeblich, die hier nicht enthalten sind.</p>
+    <p>Als &bdquo;Raum Koblenz&ldquo; gelten die Messstellen an Rhein, Mosel, Lahn, Ahr, Wied und den
+       Mittelrhein-Zuflüssen sowie Grundwassermessstellen in Rheinland-Pfalz bis 45 km. Messstellen im
+       Umkreis, die hydrologisch woanders hingehören, etwa an der Sieg oder an der Selz, stehen unter
+       &bdquo;weiteres Umfeld&ldquo;.</p>
+    <p>Grundwasserstände können mehrere Wochen alt sein, das Messdatum steht deshalb an jeder
+       Messstelle. Aktuelle Werte sind vorläufig und noch nicht abschließend geprüft.</p>
   </div>
 
   <footer>
@@ -279,5 +710,57 @@
     Zusammenstellung: <a href="https://gaind.ai">gaind</a>. Automatischer Abruf, täglich.
   </footer>
 </div>
+<script>
+(function () {
+  var zustand = { bereich: "kern", groesse: null, klasse: null };
+  var karten = Array.prototype.slice.call(document.querySelectorAll(".karte"));
+  var leer = document.getElementById("leer");
+
+  function anwenden() {
+    var sichtbar = 0;
+    karten.forEach(function (k) {
+      var passt =
+        (zustand.bereich === "alle" || k.dataset.kern === "true") &&
+        (!zustand.groesse || k.dataset.groesse === zustand.groesse) &&
+        (!zustand.klasse || k.dataset.klasse === zustand.klasse);
+      k.hidden = !passt;
+      if (passt) sichtbar++;
+    });
+    leer.hidden = sichtbar > 0;
+  }
+
+  document.querySelectorAll(".chip").forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      if (chip.dataset.bereich) {
+        zustand.bereich = chip.dataset.bereich;
+        document.querySelectorAll("[data-bereich]").forEach(function (c) {
+          c.setAttribute("aria-pressed", String(c === chip));
+        });
+      } else {
+        var an = chip.getAttribute("aria-pressed") === "true";
+        zustand.groesse = an ? null : chip.dataset.groesse;
+        document.querySelectorAll("[data-groesse]").forEach(function (c) {
+          c.setAttribute("aria-pressed", String(!an && c === chip));
+        });
+      }
+      anwenden();
+    });
+  });
+
+  document.querySelectorAll(".legende").forEach(function (b) {
+    b.setAttribute("aria-pressed", "false");
+    b.addEventListener("click", function () {
+      var an = b.getAttribute("aria-pressed") === "true";
+      zustand.klasse = an ? null : b.dataset.filter;
+      document.querySelectorAll(".legende").forEach(function (c) {
+        c.setAttribute("aria-pressed", String(!an && c === b));
+      });
+      anwenden();
+    });
+  });
+
+  anwenden();
+})();
+</script>
 </body>
 </html>
