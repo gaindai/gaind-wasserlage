@@ -418,9 +418,8 @@ def rendern(stand, verlauf):
 
     rekordsatz = ""
     if unter_rekord:
-        rekordsatz = (f' Bei <strong>{unter_rekord}</strong> davon '
-                      f'{"liegt" if unter_rekord == 1 else "liegen"} der heutige Abfluss sogar unter dem '
-                      f'niedrigsten Wert, den die amtliche Zeitreihe dort bisher führt.')
+        rekordsatz = (f' Bei <strong>{unter_rekord}</strong> davon liegt der heutige Abfluss sogar unter '
+                      f'dem niedrigsten Wert, den die amtliche Zeitreihe dort bisher führt.')
 
     return f"""<!doctype html>
 <html lang="de">
