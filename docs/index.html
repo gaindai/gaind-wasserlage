@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wasserlage Raum Koblenz</title>
+<meta name="description" content="Täglich aktualisierte Niedrigwasser-Lage im Umkreis von 60 km um Koblenz, auf Basis der amtlichen NIWIS-Daten der Bundesanstalt für Gewässerkunde.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23b32d2d'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --grund: #ffffff; --text: #16181c; --leise: #5c6470; --linie: #e3e6ea; --feld: #f6f7f9;
+    --gruen: #2f7d4f; --gelb: #a8820f; --orange: #c1631b; --rot: #b32d2d; --grau: #8d949e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --grund: #14161a; --text: #eceef1; --leise: #9aa2ad; --linie: #2a2e35; --feld: #1c1f25;
+      --gruen: #4da372; --gelb: #cfa227; --orange: #e08036; --rot: #de5a5a; --grau: #79808a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--grund); color: var(--text);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .huelle { max-width: 900px; margin: 0 auto; padding: 32px 20px 64px; }
+  h1 { font-size: 1.7rem; line-height: 1.2; margin: 0 0 6px; letter-spacing: -0.01em; }
+  h2 { font-size: 1.05rem; margin: 40px 0 12px; }
+  .unterzeile { color: var(--leise); margin: 0 0 28px; }
+  .lage { background: var(--feld); border: 1px solid var(--linie); border-radius: 10px; padding: 18px 18px 14px; }
+  .lage p { margin: 0 0 14px; font-size: 1.05rem; }
+  .balken { display: flex; height: 12px; border-radius: 6px; overflow: hidden; gap: 2px; }
+  .teil { min-width: 3px; }
+  .legenden { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 12px; font-size: 0.84rem; color: var(--leise); }
+  .legende { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .punkt { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .tabellenrahmen { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th { text-align: left; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.04em;
+        color: var(--leise); font-weight: 600; padding: 0 10px 8px 0; white-space: nowrap; }
+  td { padding: 11px 10px 11px 0; border-top: 1px solid var(--linie); vertical-align: top; }
+  .ort { min-width: 190px; }
+  .ort strong { font-weight: 600; }
+  .meta { display: block; color: var(--leise); font-size: 0.8rem; white-space: nowrap; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.78rem;
+            font-weight: 600; color: #fff; white-space: nowrap; }
+  .trend, .wert, .stand { color: var(--leise); white-space: nowrap; }
+  .wert { font-variant-numeric: tabular-nums; }
+  .alt { color: var(--orange); font-size: 0.78rem; display: block; }
+  .z { text-align: right; font-variant-numeric: tabular-nums; padding-right: 14px; }
+  .gruen { background: var(--gruen); } .gelb { background: var(--gelb); }
+  .orange { background: var(--orange); } .rot { background: var(--rot); }
+  .grau { background: var(--grau); }
+  .hinweis { background: var(--feld); border-left: 3px solid var(--linie); padding: 12px 14px;
+              border-radius: 0 8px 8px 0; color: var(--leise); font-size: 0.88rem; }
+  footer { margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--linie);
+            color: var(--leise); font-size: 0.84rem; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<div class="huelle">
+  <h1>Wasserlage Raum Koblenz</h1>
+  <p class="unterzeile">25 amtliche Messstellen im Umkreis von 60 km &middot;
+     Stand 12.08.2026</p>
+
+  <div class="lage">
+    <p><strong>17 von 25 Messstellen</strong> stehen auf &bdquo;sehr niedrig&ldquo; oder
+       &bdquo;extrem niedrig&ldquo;.</p>
+    <div class="balken"><div class="teil rot" style="flex:15" title="extrem niedrig: 15"></div><div class="teil orange" style="flex:2" title="sehr niedrig: 2"></div><div class="teil gelb" style="flex:5" title="niedrig: 5"></div><div class="teil gruen" style="flex:2" title="kein Niedrigwasser: 2"></div><div class="teil grau" style="flex:1" title="keine Daten: 1"></div></div>
+    <div class="legenden"><span class="legende"><i class="punkt rot"></i>extrem niedrig (15)</span><span class="legende"><i class="punkt orange"></i>sehr niedrig (2)</span><span class="legende"><i class="punkt gelb"></i>niedrig (5)</span><span class="legende"><i class="punkt gruen"></i>kein Niedrigwasser (2)</span><span class="legende"><i class="punkt grau"></i>keine Daten (1)</span></div>
+  </div>
+
+  <h2>Messstellen im Einzelnen</h2>
+  <div class="tabellenrahmen">
+    <table>
+      <thead><tr><th>Messstelle</th><th>Einstufung</th><th>Entwicklung</th><th>Messwert</th><th>gemessen am</th></tr></thead>
+      <tbody>
+      <tr>
+        <td class="ort"><strong>5076 Mülheim-Kärlich</strong><span class="meta">Grundwasser · 6 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">55,39 m. ü. NHN</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>6062 Neuwied, Heimb. Frankf. Str.</strong><span class="meta">Grundwasser · 11 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">55,53 m. ü. NHN</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Andernach (Rhein)</strong><span class="meta">Abfluss · 17 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="fallend">↓ fallend</td>
+        <td class="wert">542,66 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Weinähr (Gelbach)</strong><span class="meta">Abfluss · 19 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="fallend">↓ fallend</td>
+        <td class="wert">0,19 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Seifen (Holzbach)</strong><span class="meta">Abfluss · 30 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="fallend">↓ fallend</td>
+        <td class="wert">0,16 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Kaub (Rhein)</strong><span class="meta">Abfluss · 33 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="fallend">↓ fallend</td>
+        <td class="wert">498,15 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Pfaffental (Wisper)</strong><span class="meta">Abfluss · 39 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="gleichbleibend">→ gleichbleibend</td>
+        <td class="wert">0 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Cochem 2 (Endertbach)</strong><span class="meta">Abfluss · 39 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="fallend">↓ fallend</td>
+        <td class="wert">0,01 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Niederbrechen (Emsbach)</strong><span class="meta">Abfluss · 40 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="steigend">↑ steigend</td>
+        <td class="wert">0,22 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Eitorf (Sieg)</strong><span class="meta">Abfluss · 48 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">1,58 m³/s</td>
+        <td class="stand">09.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Broel (Bröl)</strong><span class="meta">Abfluss · 51 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">0,23 m³/s</td>
+        <td class="stand">09.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Bonn (Rhein)</strong><span class="meta">Abfluss · 54 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="fallend">↓ fallend</td>
+        <td class="wert">555,68 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Daun (Lieser)</strong><span class="meta">Abfluss · 56 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="gleichbleibend">→ gleichbleibend</td>
+        <td class="wert">0 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Menden 1 (Sieg)</strong><span class="meta">Abfluss · 58 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">3,5 m³/s</td>
+        <td class="stand">09.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Leun neu (Lahn)</strong><span class="meta">Abfluss · 58 km</span></td>
+        <td><span class="badge rot">extrem niedrig</span></td>
+        <td class="trend" title="fallend">↓ fallend</td>
+        <td class="wert">4,06 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Cochem (Mosel)</strong><span class="meta">Abfluss · 38 km</span></td>
+        <td><span class="badge orange">sehr niedrig</span></td>
+        <td class="trend" title="fallend">↓ fallend</td>
+        <td class="wert">38,46 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>FUSSINGEN</strong><span class="meta">Grundwasser · 41 km</span></td>
+        <td><span class="badge orange">sehr niedrig</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">302,77 m. ü. NHN</td>
+        <td class="stand">10.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>BURG HOHENSTEIN</strong><span class="meta">Grundwasser · 39 km</span></td>
+        <td><span class="badge gelb">niedrig</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">260,08 m. ü. NHN</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Altenahr (Ahr)</strong><span class="meta">Abfluss · 46 km</span></td>
+        <td><span class="badge gelb">niedrig</span></td>
+        <td class="trend" title="fallend">↓ fallend</td>
+        <td class="wert">0,71 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>6072 I Mittelhof, Niederhövels</strong><span class="meta">Grundwasser · 50 km</span></td>
+        <td><span class="badge gelb">niedrig</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">156,96 m. ü. NHN</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Oberingelheim (Selz)</strong><span class="meta">Abfluss · 55 km</span></td>
+        <td><span class="badge gelb">niedrig</span></td>
+        <td class="trend" title="fallend">↓ fallend</td>
+        <td class="wert">0,16 m³/s</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>2199 Schwabenheim an der Selz</strong><span class="meta">Grundwasser · 59 km</span></td>
+        <td><span class="badge gelb">niedrig</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">210,93 m. ü. NHN</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>LGD BN VENNE 2     </strong><span class="meta">Grundwasser · 49 km</span></td>
+        <td><span class="badge gruen">kein Niedrigwasser</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">172,18 m. ü. NHN</td>
+        <td class="stand">30.07.2026 <span class="alt">13 Tage alt</span></td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>2069 Bingen am Rhein, Sponsheim</strong><span class="meta">Grundwasser · 54 km</span></td>
+        <td><span class="badge gruen">kein Niedrigwasser</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">97,71 m. ü. NHN</td>
+        <td class="stand">11.08.2026</td>
+      </tr>
+      <tr>
+        <td class="ort"><strong>Rheindiebach (Gailsbach)</strong><span class="meta">Abfluss · 38 km</span></td>
+        <td><span class="badge grau">keine Daten</span></td>
+        <td class="trend" title="unbekannt">· unbekannt</td>
+        <td class="wert">0 m³/s</td>
+        <td class="stand">28.07.2026 <span class="alt">15 Tage alt</span></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Verlauf</h2>
+  <p class="unterzeile">Anzahl Messstellen je Einstufung, ein Eintrag pro Abruftag.</p>
+  <div class="tabellenrahmen">
+    <table>
+      <thead><tr><th>Tag</th><th>extrem niedrig</th><th>sehr niedrig</th><th>niedrig</th><th>kein Niedrigwasser</th><th>keine Daten</th></tr></thead>
+      <tbody>      <tr><td>12.08.2026</td><td class="z">15</td><td class="z">2</td><td class="z">5</td><td class="z">2</td><td class="z">1</td></tr></tbody>
+    </table>
+  </div>
+
+  <h2>Was diese Seite ist, und was nicht</h2>
+  <div class="hinweis">
+    Diese Seite gibt die amtliche Einstufung der Messstellen wieder. Sie ist eine
+    Orientierung, keine amtliche Warnung und keine Aussage über die Trinkwasserversorgung
+    einer bestimmten Gemeinde. Dafür sind die Betriebsdaten des jeweiligen Wasserversorgers
+    maßgeblich, die hier nicht enthalten sind. Grundwasserwerte können mehrere Wochen
+    alt sein, das jeweilige Messdatum steht deshalb an jeder Zeile.
+  </div>
+
+  <footer>
+    Datenquelle: NIWIS, Bundesanstalt für Gewässerkunde, Koblenz
+    (<a href="https://niwis-online.de">niwis-online.de</a>). Messdaten der Länder und des Bundes,
+    je Messstelle unter CC BY 4.0. Einstufung und Entwicklung stammen unverändert aus NIWIS.<br>
+    Zusammenstellung: <a href="https://gaind.ai">gaind</a>. Automatischer Abruf, täglich.
+  </footer>
+</div>
+</body>
+</html>

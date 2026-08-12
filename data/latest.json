@@ -1,0 +1,289 @@
+{
+  "abgerufen_am": "2026-08-12",
+  "umkreis_km": 60,
+  "mittelpunkt": "Koblenz",
+  "stationen": [
+    {
+      "nummer": "DEGM_DERP2713113500",
+      "name": "5076 Mülheim-Kärlich",
+      "messgroesse": "Grundwasser",
+      "entfernung_km": 6,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "KEINE_DATEN",
+      "messwert": 55.39,
+      "einheit": "m. ü. NHN",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DEGM_DERP2713164500",
+      "name": "6062 Neuwied, Heimb. Frankf. Str.",
+      "messgroesse": "Grundwasser",
+      "entfernung_km": 11,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "KEINE_DATEN",
+      "messwert": 55.53,
+      "einheit": "m. ü. NHN",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DEXX27100400",
+      "name": "Andernach (Rhein)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 17,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "FALLEND",
+      "messwert": 542.658,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DERP2589030600",
+      "name": "Weinähr (Gelbach)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 19,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "FALLEND",
+      "messwert": 0.188,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DERP2716060000",
+      "name": "Seifen (Holzbach)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 30,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "FALLEND",
+      "messwert": 0.163,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DEXX25700100",
+      "name": "Kaub (Rhein)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 33,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "FALLEND",
+      "messwert": 498.153,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DEHE25650156",
+      "name": "Pfaffental (Wisper)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 39,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "GLEICHBLEIBEND",
+      "messwert": 0.0,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DERP2692040200",
+      "name": "Cochem 2 (Endertbach)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 39,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "FALLEND",
+      "messwert": 0.013,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DEHE25871756",
+      "name": "Niederbrechen (Emsbach)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 40,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "STEIGEND",
+      "messwert": 0.219,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DENW2725910000100",
+      "name": "Eitorf (Sieg)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 48,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "KEINE_DATEN",
+      "messwert": 1.578,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-09"
+    },
+    {
+      "nummer": "DESM_DENW2726900000100",
+      "name": "Broel (Bröl)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 51,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "KEINE_DATEN",
+      "messwert": 0.228,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-09"
+    },
+    {
+      "nummer": "DESM_DEXX2710080",
+      "name": "Bonn (Rhein)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 54,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "FALLEND",
+      "messwert": 555.68,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DERP2678020100",
+      "name": "Daun (Lieser)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 56,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "GLEICHBLEIBEND",
+      "messwert": 0.0,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DENW2729100000100",
+      "name": "Menden 1 (Sieg)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 58,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "KEINE_DATEN",
+      "messwert": 3.502,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-09"
+    },
+    {
+      "nummer": "DESM_DEXX25800200",
+      "name": "Leun neu (Lahn)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 58,
+      "klasse": "EXTREM_NIEDRIG",
+      "trend": "FALLEND",
+      "messwert": 4.059,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DEXX26900400",
+      "name": "Cochem (Mosel)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 38,
+      "klasse": "SEHR_NIEDRIG",
+      "trend": "FALLEND",
+      "messwert": 38.46,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DEGM_DEHE7678",
+      "name": "FUSSINGEN",
+      "messgroesse": "Grundwasser",
+      "entfernung_km": 41,
+      "klasse": "SEHR_NIEDRIG",
+      "trend": "KEINE_DATEN",
+      "messwert": 302.77,
+      "einheit": "m. ü. NHN",
+      "gemessen_am": "2026-08-10"
+    },
+    {
+      "nummer": "DEGM_DEHE9688",
+      "name": "BURG HOHENSTEIN",
+      "messgroesse": "Grundwasser",
+      "entfernung_km": 39,
+      "klasse": "NIEDRIG",
+      "trend": "KEINE_DATEN",
+      "messwert": 260.08,
+      "einheit": "m. ü. NHN",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DERP2718040300",
+      "name": "Altenahr (Ahr)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 46,
+      "klasse": "NIEDRIG",
+      "trend": "FALLEND",
+      "messwert": 0.714,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DEGM_DERP2723100500",
+      "name": "6072 I Mittelhof, Niederhövels",
+      "messgroesse": "Grundwasser",
+      "entfernung_km": 50,
+      "klasse": "NIEDRIG",
+      "trend": "KEINE_DATEN",
+      "messwert": 156.96,
+      "einheit": "m. ü. NHN",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DERP2520080500",
+      "name": "Oberingelheim (Selz)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 55,
+      "klasse": "NIEDRIG",
+      "trend": "FALLEND",
+      "messwert": 0.162,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DEGM_DERP2529151600",
+      "name": "2199 Schwabenheim an der Selz",
+      "messgroesse": "Grundwasser",
+      "entfernung_km": 59,
+      "klasse": "NIEDRIG",
+      "trend": "KEINE_DATEN",
+      "messwert": 210.93,
+      "einheit": "m. ü. NHN",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DEGM_DENW070283813",
+      "name": "LGD BN VENNE 2     ",
+      "messgroesse": "Grundwasser",
+      "entfernung_km": 49,
+      "klasse": "KEIN_NIEDRIGWASSER",
+      "trend": "KEINE_DATEN",
+      "messwert": 172.18,
+      "einheit": "m. ü. NHN",
+      "gemessen_am": "2026-07-30"
+    },
+    {
+      "nummer": "DEGM_DERP2549140200",
+      "name": "2069 Bingen am Rhein, Sponsheim",
+      "messgroesse": "Grundwasser",
+      "entfernung_km": 54,
+      "klasse": "KEIN_NIEDRIGWASSER",
+      "trend": "KEINE_DATEN",
+      "messwert": 97.71,
+      "einheit": "m. ü. NHN",
+      "gemessen_am": "2026-08-11"
+    },
+    {
+      "nummer": "DESM_DERP2572050000",
+      "name": "Rheindiebach (Gailsbach)",
+      "messgroesse": "Abfluss",
+      "entfernung_km": 38,
+      "klasse": "KEINE_DATEN",
+      "trend": "KEINE_DATEN",
+      "messwert": 0.002,
+      "einheit": "m³/s",
+      "gemessen_am": "2026-07-28"
+    }
+  ],
+  "verteilung": {
+    "EXTREM_NIEDRIG": 15,
+    "SEHR_NIEDRIG": 2,
+    "NIEDRIG": 5,
+    "KEIN_NIEDRIGWASSER": 2,
+    "KEINE_DATEN": 1
+  }
+}

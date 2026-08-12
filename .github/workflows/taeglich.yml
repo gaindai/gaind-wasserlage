@@ -1,0 +1,39 @@
+name: Wasserlage täglich
+
+on:
+  schedule:
+    # 05:20 UTC. NIWIS liefert Tagesmittel des Vortags, vorher lohnt der Lauf nicht.
+    - cron: "20 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wasserlage
+  cancel-in-progress: false
+
+jobs:
+  abrufen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Abrufen und rendern
+        run: python3 build.py
+
+      - name: Tagesstand committen
+        run: |
+          git config user.name "gaind Wasserlage"
+          git config user.email "julian@gaind.ai"
+          git add data docs
+          if git diff --staged --quiet; then
+            echo "Keine Änderung, kein Commit."
+          else
+            git commit -m "Wasserlage $(date -u +%Y-%m-%d)"
+            git push
+          fi
