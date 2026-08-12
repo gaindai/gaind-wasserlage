@@ -4,9 +4,6 @@ Täglich aktualisierte Übersicht der amtlichen Niedrigwasser-Einstufung für al
 NIWIS-Messstellen im Umkreis von 60 km um Koblenz. Statische Seite, kein Server, keine
 Datenbank, keine laufenden Kosten.
 
-Hintergrund und Geschäftsbewertung: siehe Vault-Notiz in `30-resources/` (jbrain).
-Kurzfassung: Das hier ist ein **Reputations-Asset und Gesprächsöffner**, kein Produkt.
-
 ## Was es tut
 
 1. Holt je Messgröße die Karten-Übersicht aus NIWIS (Einstufung, Entwicklung, Koordinate)
