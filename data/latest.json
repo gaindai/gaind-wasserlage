@@ -1,5 +1,5 @@
 {
-  "abgerufen_am": "2026-11-21",
+  "abgerufen_am": "2026-11-22",
   "umkreis_km": 60,
   "mittelpunkt": "Koblenz",
   "stationen": [
@@ -16,7 +16,7 @@
       "trend_eigen": "GLEICHBLEIBEND",
       "messwert": 54.73,
       "einheit": "m. ü. NHN",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": 13.43,
       "ezg_km2": null,
       "rekord_wert": null,
@@ -25,7 +25,6 @@
       "betreiber": "LfU",
       "url": "https://lfu.rlp.de",
       "reihe": [
-        54.76,
         54.76,
         54.75,
         54.74,
@@ -54,6 +53,7 @@
         54.73,
         54.72,
         54.73,
+        54.73,
         54.73
       ]
     },
@@ -70,7 +70,7 @@
       "trend_eigen": "STEIGEND",
       "messwert": 54.86,
       "einheit": "m. ü. NHN",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": 19.04,
       "ezg_km2": null,
       "rekord_wert": null,
@@ -79,7 +79,6 @@
       "betreiber": "LfU",
       "url": "https://lfu.rlp.de",
       "reihe": [
-        54.9,
         54.9,
         54.88,
         54.88,
@@ -108,6 +107,7 @@
         54.86,
         54.85,
         54.86,
+        54.86,
         54.86
       ]
     },
@@ -122,9 +122,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 1619.749,
+      "messwert": 1924.618,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 139549,
       "rekord_wert": 593.0,
@@ -133,7 +133,6 @@
       "betreiber": "WSA Rhein",
       "url": "https://www.pegelonline.wsv.de/gast/start",
       "reihe": [
-        578.941,
         614.058,
         621.446,
         726.326,
@@ -162,7 +161,8 @@
         899.165,
         1142.437,
         1430.512,
-        1619.749
+        1619.749,
+        1924.618
       ]
     },
     {
@@ -176,9 +176,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 4.95,
+      "messwert": 4.46,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 215,
       "rekord_wert": 0.084,
@@ -187,7 +187,6 @@
       "betreiber": "LfU RP",
       "url": "https://geodaten-wasser.rlp-umwelt.de/wasserstand/2589030600/hauptwerte",
       "reihe": [
-        0.418,
         0.457,
         0.741,
         5.27,
@@ -216,7 +215,8 @@
         3.0,
         2.48,
         1.58,
-        4.95
+        4.95,
+        4.46
       ]
     },
     {
@@ -230,9 +230,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 3.72,
+      "messwert": 5.25,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 176,
       "rekord_wert": 0.064,
@@ -241,7 +241,6 @@
       "betreiber": "LfU RP",
       "url": "https://geodaten-wasser.rlp-umwelt.de/wasserstand/2716060000/hauptwerte",
       "reihe": [
-        0.4,
         0.415,
         0.674,
         3.84,
@@ -270,7 +269,8 @@
         1.25,
         2.67,
         1.98,
-        3.72
+        3.72,
+        5.25
       ]
     },
     {
@@ -284,9 +284,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 1112.079,
+      "messwert": 1358.065,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 103488,
       "rekord_wert": 25,
@@ -295,7 +295,6 @@
       "betreiber": "WSA Rhein",
       "url": "https://www.pegelonline.wsv.de/gast/start",
       "reihe": [
-        519.177,
         545.237,
         538.913,
         571.56,
@@ -324,7 +323,8 @@
         727.352,
         862.122,
         979.784,
-        1112.079
+        1112.079,
+        1358.065
       ]
     },
     {
@@ -338,9 +338,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 0.011,
+      "messwert": 0.009,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 10,
       "rekord_wert": 0.0,
@@ -349,7 +349,6 @@
       "betreiber": "LfU RP",
       "url": "https://geodaten-wasser.rlp-umwelt.de/wasserstand/2572050000/hauptwerte",
       "reihe": [
-        0.002,
         0.002,
         0.002,
         0.007,
@@ -378,7 +377,8 @@
         0.007,
         0.007,
         0.004,
-        0.011
+        0.011,
+        0.009
       ]
     },
     {
@@ -392,9 +392,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 425.264,
+      "messwert": 552.494,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 27088,
       "rekord_wert": 29.0,
@@ -403,7 +403,6 @@
       "betreiber": "WSA Mosel-Saar-Lahn",
       "url": "https://www.pegelonline.wsv.de/gast/start",
       "reihe": [
-        55.14,
         60.59,
         62.33,
         179.591,
@@ -432,7 +431,8 @@
         175.734,
         298.399,
         450.691,
-        425.264
+        425.264,
+        552.494
       ]
     },
     {
@@ -444,11 +444,11 @@
       "kernraum": true,
       "entfernung_km": 39,
       "klasse": "KEIN_NIEDRIGWASSER",
-      "trend": "KEINE_DATEN",
-      "trend_eigen": "STEIGEND",
-      "messwert": 0.512,
+      "trend": "STEIGEND",
+      "trend_eigen": null,
+      "messwert": 1.2,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-19",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 170,
       "rekord_wert": 0.006,
@@ -457,8 +457,6 @@
       "betreiber": "HLNUG",
       "url": "https://www.hlnug.de/static/pegel/wiskiweb3/webpublic/#/overview/Wasserstand/station/42104/Pfaffental/Wasserstand?period=P7D",
       "reihe": [
-        0.094,
-        0.109,
         0.129,
         0.157,
         0.515,
@@ -486,7 +484,9 @@
         0.147,
         0.539,
         0.62,
-        0.512
+        0.512,
+        0.519,
+        1.2
       ]
     },
     {
@@ -500,9 +500,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 0.821,
+      "messwert": 1.36,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 59,
       "rekord_wert": 0.005,
@@ -511,7 +511,6 @@
       "betreiber": "LfU RP",
       "url": "https://geodaten-wasser.rlp-umwelt.de/wasserstand/2692040200/hauptwerte",
       "reihe": [
-        0.055,
         0.085,
         0.097,
         0.465,
@@ -540,7 +539,8 @@
         0.354,
         0.503,
         0.507,
-        0.821
+        0.821,
+        1.36
       ]
     },
     {
@@ -552,11 +552,11 @@
       "kernraum": true,
       "entfernung_km": 40,
       "klasse": "KEIN_NIEDRIGWASSER",
-      "trend": "KEINE_DATEN",
-      "trend_eigen": "STEIGEND",
-      "messwert": 0.923,
+      "trend": "STEIGEND",
+      "trend_eigen": null,
+      "messwert": 2.37,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-19",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 305,
       "rekord_wert": 0.09,
@@ -565,8 +565,6 @@
       "betreiber": "HLNUG",
       "url": "https://www.hlnug.de/static/pegel/wiskiweb3/webpublic/#/overview/Wasserstand/station/42545/Niederbrechen/Wasserstand?period=P7D",
       "reihe": [
-        0.422,
-        0.41,
         0.436,
         0.493,
         2.55,
@@ -594,7 +592,9 @@
         0.82,
         1.86,
         1.39,
-        0.923
+        0.923,
+        1.89,
+        2.37
       ]
     },
     {
@@ -608,9 +608,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 13.7,
+      "messwert": 24.3,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 747,
       "rekord_wert": 0.292,
@@ -619,7 +619,6 @@
       "betreiber": "LfU RP",
       "url": "https://geodaten-wasser.rlp-umwelt.de/wasserstand/2718040300/hauptwerte",
       "reihe": [
-        1.36,
         1.37,
         1.5,
         4.55,
@@ -648,7 +647,8 @@
         2.8,
         9.21,
         11.0,
-        13.7
+        13.7,
+        24.3
       ]
     },
     {
@@ -662,9 +662,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 1652.46,
+      "messwert": 1936.556,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 140901,
       "rekord_wert": 622.0,
@@ -673,7 +673,6 @@
       "betreiber": "WSA Rhein",
       "url": "https://www.pegelonline.wsv.de/gast/start",
       "reihe": [
-        586.086,
         601.212,
         624.671,
         675.251,
@@ -702,7 +701,8 @@
         857.771,
         1082.523,
         1379.093,
-        1652.46
+        1652.46,
+        1936.556
       ]
     },
     {
@@ -716,9 +716,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 4.02,
+      "messwert": 3.3,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 42,
       "rekord_wert": 0.002,
@@ -727,7 +727,6 @@
       "betreiber": "LfU RP",
       "url": "https://geodaten-wasser.rlp-umwelt.de/wasserstand/2678020100/hauptwerte",
       "reihe": [
-        0.026,
         0.099,
         0.146,
         0.979,
@@ -756,7 +755,8 @@
         1.27,
         2.46,
         1.44,
-        4.02
+        4.02,
+        3.3
       ]
     },
     {
@@ -770,9 +770,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 61.851,
+      "messwert": 89.349,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 3571,
       "rekord_wert": 2.0,
@@ -781,7 +781,6 @@
       "betreiber": "WSA Mosel-Saar-Lahn",
       "url": "https://www.pegelonline.wsv.de/gast/start",
       "reihe": [
-        7.791,
         6.808,
         7.192,
         20.14,
@@ -810,7 +809,62 @@
         19.208,
         45.399,
         50.471,
-        61.851
+        61.851,
+        89.349
+      ]
+    },
+    {
+      "nummer": "DEGM_DERP2529151600",
+      "name": "2199 Schwabenheim an der Selz",
+      "messgroesse": "Grundwasser",
+      "gewaesser": null,
+      "raum": "Rotliegend und Tertiär des zentralen Mainzer Beckens",
+      "kernraum": false,
+      "entfernung_km": 59,
+      "klasse": "SEHR_NIEDRIG",
+      "trend": "KEINE_DATEN",
+      "trend_eigen": "GLEICHBLEIBEND",
+      "messwert": 210.88,
+      "einheit": "m. ü. NHN",
+      "gemessen_am": "2026-11-21",
+      "tiefe_unter_gelaende": 31.92,
+      "ezg_km2": null,
+      "rekord_wert": null,
+      "rekord_art": null,
+      "rekord_datum": null,
+      "betreiber": "LfU",
+      "url": "https://lfu.rlp.de",
+      "reihe": [
+        211.0,
+        210.96,
+        211.0,
+        210.93,
+        210.96,
+        210.93,
+        210.94,
+        210.95,
+        210.95,
+        210.96,
+        210.97,
+        210.97,
+        210.97,
+        210.98,
+        210.98,
+        210.97,
+        210.97,
+        210.99,
+        211.0,
+        211.02,
+        211.01,
+        210.93,
+        210.94,
+        211.0,
+        211.0,
+        211.04,
+        211.0,
+        210.99,
+        210.94,
+        210.88
       ]
     },
     {
@@ -865,60 +919,6 @@
         302.87,
         302.88,
         302.9
-      ]
-    },
-    {
-      "nummer": "DEGM_DERP2529151600",
-      "name": "2199 Schwabenheim an der Selz",
-      "messgroesse": "Grundwasser",
-      "gewaesser": null,
-      "raum": "Rotliegend und Tertiär des zentralen Mainzer Beckens",
-      "kernraum": false,
-      "entfernung_km": 59,
-      "klasse": "NIEDRIG",
-      "trend": "KEINE_DATEN",
-      "trend_eigen": "GLEICHBLEIBEND",
-      "messwert": 210.95,
-      "einheit": "m. ü. NHN",
-      "gemessen_am": "2026-11-20",
-      "tiefe_unter_gelaende": 31.85,
-      "ezg_km2": null,
-      "rekord_wert": null,
-      "rekord_art": null,
-      "rekord_datum": null,
-      "betreiber": "LfU",
-      "url": "https://lfu.rlp.de",
-      "reihe": [
-        210.96,
-        211.0,
-        210.96,
-        211.0,
-        210.93,
-        210.96,
-        210.93,
-        210.94,
-        210.95,
-        210.95,
-        210.96,
-        210.97,
-        210.97,
-        210.97,
-        210.98,
-        210.98,
-        210.97,
-        210.97,
-        210.99,
-        211.0,
-        211.02,
-        211.01,
-        210.93,
-        210.94,
-        211.0,
-        211.0,
-        211.04,
-        211.0,
-        210.99,
-        210.95
       ]
     },
     {
@@ -986,9 +986,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 118.197,
+      "messwert": 152.226,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 1468,
       "rekord_wert": null,
@@ -997,7 +997,6 @@
       "betreiber": "LANUV NRW",
       "url": "http://luadb.lds.nrw.de/LUA/hygon/pegel.php",
       "reihe": [
-        3.787,
         3.927,
         5.483,
         30.295,
@@ -1026,7 +1025,8 @@
         17.111,
         74.559,
         76.903,
-        118.197
+        118.197,
+        152.226
       ]
     },
     {
@@ -1042,7 +1042,7 @@
       "trend_eigen": "GLEICHBLEIBEND",
       "messwert": 172.05,
       "einheit": "m. ü. NHN",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": 6.78,
       "ezg_km2": null,
       "rekord_wert": null,
@@ -1052,7 +1052,6 @@
       "url": "https://www.elwasweb.nrw.de/",
       "reihe": [
         172.09,
-        172.09,
         172.08,
         172.09,
         172.08,
@@ -1080,6 +1079,7 @@
         172.06,
         172.06,
         172.06,
+        172.05,
         172.05
       ]
     },
@@ -1094,10 +1094,10 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "KEINE_DATEN",
       "trend_eigen": "STEIGEND",
-      "messwert": 158.25,
+      "messwert": 158.29,
       "einheit": "m. ü. NHN",
-      "gemessen_am": "2026-11-20",
-      "tiefe_unter_gelaende": 1.48,
+      "gemessen_am": "2026-11-21",
+      "tiefe_unter_gelaende": 1.44,
       "ezg_km2": null,
       "rekord_wert": null,
       "rekord_art": null,
@@ -1105,7 +1105,6 @@
       "betreiber": "LfU",
       "url": "https://lfu.rlp.de",
       "reihe": [
-        157.45,
         157.46,
         157.47,
         157.83,
@@ -1134,7 +1133,8 @@
         157.67,
         158.04,
         158.01,
-        158.25
+        158.29,
+        158.29
       ]
     },
     {
@@ -1148,9 +1148,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 34.519,
+      "messwert": 25.641,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 216,
       "rekord_wert": null,
@@ -1159,7 +1159,6 @@
       "betreiber": "LANUV NRW",
       "url": "http://luadb.lds.nrw.de/LUA/hygon/pegel.php",
       "reihe": [
-        0.831,
         0.96,
         2.301,
         13.011,
@@ -1188,7 +1187,8 @@
         6.048,
         17.322,
         12.351,
-        34.519
+        34.519,
+        25.641
       ]
     },
     {
@@ -1202,10 +1202,10 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "KEINE_DATEN",
       "trend_eigen": "STEIGEND",
-      "messwert": 97.55,
+      "messwert": 97.56,
       "einheit": "m. ü. NHN",
-      "gemessen_am": "2026-11-20",
-      "tiefe_unter_gelaende": 3.95,
+      "gemessen_am": "2026-11-21",
+      "tiefe_unter_gelaende": 3.94,
       "ezg_km2": null,
       "rekord_wert": null,
       "rekord_art": null,
@@ -1213,7 +1213,6 @@
       "betreiber": "LfU",
       "url": "https://lfu.rlp.de",
       "reihe": [
-        97.56,
         97.55,
         97.55,
         97.55,
@@ -1242,7 +1241,8 @@
         97.53,
         97.54,
         97.55,
-        97.55
+        97.55,
+        97.56
       ]
     },
     {
@@ -1256,9 +1256,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 1.01,
+      "messwert": 0.923,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 363,
       "rekord_wert": 0.051,
@@ -1267,7 +1267,6 @@
       "betreiber": "LfU RP",
       "url": "https://geodaten-wasser.rlp-umwelt.de/wasserstand/2520080500/hauptwerte",
       "reihe": [
-        0.35,
         0.347,
         0.337,
         0.583,
@@ -1296,7 +1295,8 @@
         0.781,
         0.801,
         0.94,
-        1.01
+        1.01,
+        0.923
       ]
     },
     {
@@ -1310,9 +1310,9 @@
       "klasse": "KEIN_NIEDRIGWASSER",
       "trend": "STEIGEND",
       "trend_eigen": null,
-      "messwert": 218.07,
+      "messwert": 278.344,
       "einheit": "m³/s",
-      "gemessen_am": "2026-11-20",
+      "gemessen_am": "2026-11-21",
       "tiefe_unter_gelaende": null,
       "ezg_km2": 2825,
       "rekord_wert": null,
@@ -1321,7 +1321,6 @@
       "betreiber": "LANUV NRW",
       "url": "http://luadb.lds.nrw.de/LUA/hygon/pegel.php",
       "reihe": [
-        10.231,
         10.862,
         17.705,
         73.118,
@@ -1350,7 +1349,8 @@
         39.394,
         129.3,
         131.768,
-        218.07
+        218.07,
+        278.344
       ]
     }
   ],
@@ -1363,8 +1363,8 @@
   },
   "verteilung_alle": {
     "EXTREM_NIEDRIG": 2,
-    "SEHR_NIEDRIG": 0,
-    "NIEDRIG": 2,
+    "SEHR_NIEDRIG": 1,
+    "NIEDRIG": 1,
     "KEIN_NIEDRIGWASSER": 21,
     "KEINE_DATEN": 0
   }
